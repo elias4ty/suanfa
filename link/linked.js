@@ -181,4 +181,3 @@ t.append('b');
 t.append('c');
 t.insert(1, 'd');
 console.log(t.remove('c'));
-console.log(t);
