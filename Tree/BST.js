@@ -93,6 +93,26 @@ BST.prototype.postOrder = function postOrder({node = this.root, handler}) {
     handler(node);
 }
 
+// 层序遍历，一层一层的输出元素，递归不好使，需要借助队列
+// 参考：https://blog.csdn.net/monster_ii/article/details/82115772
+BST.prototype.levelOrder = function levelOrder({node = this.root, handler}) {
+    let queue = [node];
+    
+    while(queue.length) {
+        let cur = queue.shift();
+
+        handler(cur);
+
+        if (cur.left) {
+            queue.push(cur.left);
+        }
+
+        if(cur.right) {
+            queue.push(cur.right);
+        }
+    }
+}
+
 BST.prototype.min = function min(){
     let current = this.root;
 
@@ -208,26 +228,33 @@ BST.prototype.remove = function remove(data) {
     current = null;
 }
 
-let t = new BST();
-t.insert(11);
-t.insert(7);
-t.insert(15);
-t.insert(5);
-t.insert(6);
-t.insert(3);
-t.insert(9);
-t.insert(8);
-t.insert(10);
-t.insert(13);
-t.insert(12);
-t.insert(14);
-t.insert(20);
-t.insert(18);
-t.insert(25);
 
-t.remove(3);
-t.remove(5);
-t.remove(25);
+function init() {
+    let t = new BST();
+    t.insert(11);
+    t.insert(7);
+    t.insert(15);
+    t.insert(5);
+    t.insert(6);
+    t.insert(3);
+    t.insert(9);
+    t.insert(8);
+    t.insert(10);
+    t.insert(13);
+    t.insert(12);
+    t.insert(14);
+    t.insert(20);
+    t.insert(18);
+    t.insert(25);   
+
+    return t; 
+}
+
+// t.remove(3);
+// t.remove(5);
+// t.remove(25);
+
+let t = init();
 
 let pre = [];
 t.preOrder({handler : function(node) {
@@ -250,5 +277,17 @@ t.postOrder({ handler : function(node) {
 
 console.log(post.join('->'));
 
+let level = [];
+t.levelOrder({ handler : function(node) {
+    level.push(node.data);
+}});
+
+console.log(level.join('->'));
+
 // console.log(t.min(), '--', t.max());
 // console.log(t.search(100));
+
+
+module.exports = {
+    init
+};
