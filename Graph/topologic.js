@@ -9,7 +9,8 @@ const graph = { // 入度表
     2: [1],
     3: [1],
     4: [2,3],
-    5: [3]  
+    5: [3],
+    6: [4, 5]  
 };
 
 const len = Object.keys(graph).length;
