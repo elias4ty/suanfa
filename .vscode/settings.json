@@ -1,4 +1,5 @@
 {
     "debug.javascript.onlyAutoAttachExplicit": false,
-    "debug.javascript.usePreview": false
+    "debug.javascript.usePreview": false,
+    "compile-hero.disable-compile-files-on-did-save-code": true
 }
