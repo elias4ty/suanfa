@@ -1,80 +1,71 @@
-class Heap {
-    heapSize = 0;
-    arr = [];
-
+class Heap{
     constructor(arr) {
         this.arr = arr;
+        this.len = this.arr.length;
+        this.heapSize = this.len - 1;
+        
         this.build();
     }
 
-    exchange(i, j) {
-        let tmp = this.arr[i];
-        this.arr[i] = this.arr[j];
-        this.arr[j] = tmp;    
-    }
-
     /**
-     * 
-     * @param {Array} this.arr 
-     * @param {Number} i 
-     * @param {Number} heapSize 
-     * 
-     * 保持堆的性质
-     * 思考：不用递归而用循环怎么写？
-     * ex.6.2.5
-     */    
-    heapify(i) {
-        const left = 2 * i + 1;
-        const right = 2 * i + 2;
-        let largest = i;
-    
-        if(left <= this.heapSize && this.arr[left] > this.arr[largest]) {
-            largest = left;
-        }
-    
-        if(right <= this.heapSize && this.arr[right] > this.arr[largest]) {
-            largest = right;
-        }
-    
-        if(largest !== i) {
-            this.exchange(i, largest);
-            this.heapify(largest);
-        }
-    }
-
+     * 建堆，时间复杂度为 O(n)，推理过程见算法导论 6.3
+     * 每一个堆的叶子节点总是从 n / 2 开始
+     * 倒序维护堆的性质
+     */
     build() {
-        this.heapSize = this.arr.length - 1;
-        const start = this.arr.length / 2 >> 0;
-    
-        for(let i = start; i >= 0; i --) {
+        const leaf = this.heapSize / 2 >> 0;
+
+        for(let i = leaf; i >= 0; i--) {
             this.heapify(i);
         }
     }
 
-    heapSort(end = 0){
-        const tmpArr = this.arr.slice(0);
+    /**
+     * 
+     * @param {*} parent 父节点索引
+     * 维护堆的性质，使得每一个节点的左子树和右子树依然是堆
+     */
+    heapify(parent) {
+        const left = 2 * parent + 1;
+        const right = left + 1;
+        let max = parent;
 
-        for(let i = this.arr.length - 1; i >= end; i--) {
-            this.exchange(i, 0);
+        if (left <= this.heapSize && this.arr[left] > this.arr[max]) {
+            max = left;
+        }
+
+        if (right <= this.heapSize && this.arr[right] > this.arr[max]) {
+            max = right;
+        }
+
+        if(max !== parent) {
+            [this.arr[max], this.arr[parent]] = [this.arr[parent], this.arr[max]];
+            this.heapify(max);
+        }
+    }
+
+    /**
+     * 堆排序的时间复杂度为 O(nlgn)
+     * 1. 依次把数组头部节点和尾部节点交换
+     * 2. 再将头部节点维护成堆的性质，也就是找到合适的位置
+     * 3. 注意维护堆的有效个数
+     */
+    sort() {
+        const tmp = this.arr.slice(0);
+        const len = this.heapSize;
+
+        for(let i = len; i >= 0; i--) {
+            [this.arr[0], this.arr[this.heapSize]] = [this.arr[this.heapSize], this.arr[0]];
             this.heapSize--;
             this.heapify(0);
         }
-        
-        const sorted = this.arr.slice(0);
-        this.arr = tmpArr;
 
-        return sorted;
-    }
+        const res = this.arr.slice(0);
+        this.arr = tmp;
+        this.heapSize = len;
 
-    get() {
-        return this.arr;
+        return res;
     }
 }
 
 module.exports = Heap;
-
-/**
- * test
- */
-// console.log(new Heap([1,2,3,4,5]).heapSort());
-// console.log(new Heap([27,17,3,16,13,10,1,5,7,12,4,8,9,0]).heapSort());

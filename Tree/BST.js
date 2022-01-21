@@ -17,6 +17,16 @@ function BST() {
     this.root = null;
 }
 
+/**
+ * 插入新节点
+ * @param {*} data 新节点值
+ * @returns 
+ * 
+ * 1. 从根节点递归比较节点值
+ * 2. 新值比右节点大则递归右子树
+ * 3. 新值比做节点小则递归左子树
+ * 4. 注意递归到叶子结点时，需要找到上一次的节点 prev
+ */
 BST.prototype.insert = function insert(data) {
     if(!data) {
         return false;
@@ -91,6 +101,24 @@ BST.prototype.postOrder = function postOrder({node = this.root, handler}) {
     }
 
     handler(node);
+}
+
+/**
+ * 
+ * 倒序遍历，先遍历右子树，再遍历节点，最后遍历左子树
+ * 升序排列
+ */
+
+BST.prototype.backOrder = function postOrder({node = this.root, handler}) {
+    if(node.right) {
+        this.backOrder({node : node.right, handler});
+    }
+
+    handler(node);
+
+    if(node.left) {
+        this.backOrder({node : node.left, handler});
+    }
 }
 
 // 层序遍历，一层一层的输出元素，递归不好使，需要借助队列
@@ -227,7 +255,6 @@ BST.prototype.remove = function remove(data) {
 
     current = null;
 }
-
 
 function init() {
     let t = new BST();

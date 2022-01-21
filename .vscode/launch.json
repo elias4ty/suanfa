@@ -11,7 +11,7 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceRoot}/Heap/priorityQueue.js"
+            "program": "${workspaceRoot}/test.js"
         }
     ]
 }

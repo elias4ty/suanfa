@@ -55,22 +55,22 @@ const pro2 = pro.then(res => {
     // return obj;
 
     // If x is function, fulfill promise with x.
-    // return thenFn;
+    return thenFn;
 
     /*
         2.3.4
         If x is not an object or function, fulfill promise with x.
     */
-    return then;
+    // return then;
 }, err => {
     console.log(err);
 })
 
-setTimeout(() => {
-    console.log(pro2)
-})
-// pro2.then(res => {
-//     console.log('pro2 fulfilled =>', res);
-// }, err => {
-//     console.log('pro2 rejected =>', err);
+// setTimeout(() => {
+//     console.log(pro2)
 // })
+pro2.then(res => {
+    console.log('pro2 fulfilled =>', res);
+}, err => {
+    console.log('pro2 rejected =>', err);
+})
