@@ -1,86 +1,45 @@
-/**
- * 返回前 K 个高频词
- *
- */
- class PQ {
-    constructor(arr, k) {
-        this.arr = [];
-        this.map = {};
+function _01bag(goods, bag) {
+    var dp = new Array(goods.length).fill(0).map(() => new Array(bag + 1).fill(0));
 
-        arr.forEach(ele => {
-            if(this.map[ele]) {
-                this.map[ele] = this.map[ele] + 1;
-            } else {
-                this.map[ele] = 1;
-            }
-        });
-
-        Object.keys(this.map).forEach(key => {
-            if(this.len < k) {
-                this.arr.push(key);
-
-                if(this.len === k - 1) {
-                    this.build();
-                }
-            } else if(this.map[this.arr[0]] < this.map[key]) {
-                heap[0] = key;
-                this.heapify(0);
-            }
-        });        
-        
+    // 第一行物品初始化
+    for(let b = 0; b <= bag; b++) {
+    	if(goods[0].weight <= b) {
+    		dp[0][b] = goods[0].val;
+    	}
     }
 
-    get len() {
-        return this.arr.length;
+    for(let i = 1; i < goods.length; i++) {
+    	for(let j = 1; j <= bag; j++) {
+    		if(goods[i].weight > j) {
+    			dp[i][j] = dp[i - 1][j];
+    		} else {
+				dp[i][j] = Math.max(
+					dp[i - 1][j],
+					dp[i][j - goods[i].weight] + goods[i].val
+				);    			
+    		}
+    	}
     }
 
-    build() {
-        const leaf = (this.len - 1) / 2 >> 0;
-
-        for(let i = leaf; i >= 0; i--) {
-            this.heapify(i);
-        }
-    }
-
-    heapify(index) {
-        const left = 2 * index + 1;
-        const right = 2 * index + 2;
-        let min = index;
-
-        if(left < this.len && this.map[left] < this.map[min]) {
-            min = left;
-        }
-
-        if(right < this.len && this.map[right] < this.map[min]) {
-            min = right;
-        }
-
-        if(min !== index) {
-            [this.arr[index], this.arr[min]] = [this.arr[min], this.arr[index]];
-            this.heapify(min);
-        }
-    }
-
-    out() {
-        const res = this.arr[0].key;
-        this.arr[0] = this.arr[this.len - 1];
-        this.arr.pop();
-        this.heapify(0);
-
-        return res;
-    }
+    return dp[goods.length - 1][bag];
 }
 
-function back2(arr, k) {
-    const pq = new PQ(arr);
-    const res = [];
-
-    while(k > 0) {
-        res.push(pq.out());
-        k--;
-    }
-
-    return res;
-}
-
-console.log(back2([3,4,1,2,3,4,5,4], 2));
+console.log(
+    _01bag(
+        [
+            {
+                weight: 1,
+                val: 1500
+            },
+            {
+                weight: 3,
+                val: 2000
+            },
+            {
+                weight: 4,
+                val: 3000
+            }
+        ],
+        4
+    )
+)
