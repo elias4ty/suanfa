@@ -21,4 +21,4 @@ function counterSort(arr) {
     return ans;
 }
 
-console.log(counterSort([2,5,3,0,2,3,0,3], 5));
+console.log(counterSort([2,5,3,0,2,3,0,3]));
