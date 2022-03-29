@@ -1,3 +1,10 @@
+/**
+ * 最长公共子序列 (longest-common-subsequence)
+ * @param {*} x 
+ * @param {*} y 
+ * @returns length
+ */
+
 function lcs(x, y) {
     const m = x.length;
     const n = y.length;
